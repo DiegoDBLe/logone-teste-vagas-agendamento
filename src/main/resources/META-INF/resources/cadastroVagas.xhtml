@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <style>
+            .bg-light-blue {
+                background-color: #add8e6 !important;
+                padding: 20px;
+            }
+        </style>
+    </h:head>
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form id="form" styleClass="bg-light-blue">
+                <div class="container">
+                    <p:panel header="Cadastro de Vagas" class="highlight">
+                        <p:panelGrid id="panelGrid" columns="2">
+                            <p:outputLabel for="dataInicio" value="Data de início:"/>
+                            <p:calendar id="dataInicio" value="#{vagaBean.vagaSelecionada.inicio}" showOn="button" required="true" mindate="today"/>
+
+                            <p:outputLabel for="dataFim" value="Data de término:"/>
+                            <p:calendar id="dataFim" value="#{vagaBean.vagaSelecionada.fim}" showOn="button" required="true" mindate="today"/>
+
+                            <p:outputLabel for="quantidade" value="Quantidade:"/>
+                            <p:inputNumber id="quantidade" value="#{vagaBean.vagaSelecionada.quantidade}" decimalPlaces="0" thousandSeparator="" required="true" maxlength="5"/>
+                        </p:panelGrid>
+                        <br />
+                        <div style="text-align: left;">
+                            <p:commandButton value="Salvar"
+                                             action="#{vagaBean.salvarVaga}"
+                                             process="@form"
+                                             update="@form"
+                                             styleClass="section-title white-text" />
+                        </div>
+                    </p:panel>
+                    <p:growl id="growl" showDetail="false" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:html>

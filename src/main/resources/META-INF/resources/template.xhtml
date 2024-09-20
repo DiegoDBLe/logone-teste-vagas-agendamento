@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>Controle de Agendamentos de Vagas</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primevue/resources/themes/nova/theme.css"/>
+
+    <link rel="stylesheet" href="https://unpkg.com/primevue/resources/primevue.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primevue/resources/themes/vela.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex/primeflex.css"/>
+
+    <style>
+        .ui-panel {
+            background-color: #1e90ff !important;
+            border-color: #007bff !important;
+        }
+
+        .section-title {
+            background-color: #1e90ff !important;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .ui-menubar, .ui-menuitem-link {
+            background-color: #1e90ff !important;
+            border: none;
+        }
+
+        .ui-menuitem-link {
+            color: red !important;
+        }
+
+        .ui-menuitem-link:hover {
+            background-color: #2399e5 !important;
+            color: white !important;
+        }
+
+        .ui-menuitem-icon {
+            color: white !important;
+        }
+
+        body {
+            background-color: white!important;
+        }
+
+        .highlight {
+            background-color: #1e90ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+         }
+
+        .highlight .ui-panel-title {
+            background-color: #1e90ff;
+            color: white !important;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+            display: block;
+            margin: 0;
+            box-sizing: border-box;
+            border-radius: 5px;
+         }
+
+        .white-text {
+            color: white !important; /* Garante que a cor branca seja aplicada */
+         }
+
+    </style>
+
+
+</h:head>
+
+<h:body>
+    <h:outputScript name="locales/locale-pt.js" library="primefaces"/>
+    <div class="highlight">
+        <h2>Controle de Agendamentos de Vagas</h2>
+    </div>
+    <div class="card">
+        <div class="layout-sidebar">
+            <p:menubar style="margin-top: 50px;">
+                <p:menuitem value="Consulta de Agendamentos" icon="pi pi-fw pi-list" url="index.xhtml"/>
+                <p:menuitem value="Cadastro de Vagas" icon="pi pi-fw pi-plus" url="cadastroVagas.xhtml"/>
+                <p:menuitem value="Cadastro de Solicitantes" icon="pi pi-fw pi-user-plus"
+                            url="cadastroSolicitantes.xhtml"/>
+                <p:menuitem value="Cadastro de Agendamentos" icon="pi pi-fw pi-calendar-plus"
+                            url="cadastroAgendamentos.xhtml"/>
+            </p:menubar>
+        </div>
+        <br/>
+        <ui:insert name="content"></ui:insert>
+    </div>
+</h:body>
+
+</html>

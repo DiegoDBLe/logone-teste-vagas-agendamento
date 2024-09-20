@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/template.xhtml">
+	<ui:define name="content" styleClass="section-title">
+		<div>
+			<div>
+				<h:form>
+					<p:panel header="Consulta de Agendamentos"  class="highlight">
+						<p:panelGrid id="panelGrid" columns="2" styleClass="section-title">
+							<p:outputLabel for="dataInicioConsulta" value="Data de início:"/>
+							<p:calendar id="dataInicioConsulta" value="#{agendamentoBean.dataInicio}" showOn="button" required="true"/>
+
+							<p:outputLabel for="dataFimConsulta" value="Data de término:"/>
+							<p:calendar id="dataFimConsulta" value="#{agendamentoBean.dataFim}" showOn="button" required="true"/>
+						</p:panelGrid>
+						<br/>
+						<div style="text-align: left;">
+							<p:commandButton value="Consultar"
+											 action="#{agendamentoBean.buscarAgendamentoPorPeriodo}"
+											 process="@form"
+											 update="panelGrid,dataTable,@form"
+											 styleClass="section-title white-text" />
+						</div>
+					</p:panel>
+					<p:growl id="growl" showDetail="false" />
+				</h:form>
+			</div>
+			<div style="flex: 2;">
+				<p:dataTable id="dataTable" value="#{agendamentoBean.agendamentos}" var="agendamento" emptyMessage="Nenhum agendamento encontrado" styleClass="section-title">
+					<p:column headerText="Solicitante" style="text-align: center;">
+						<h:outputText value="#{agendamento.solicitante.nome}" class="highlight" />
+					</p:column>
+					<p:column headerText="Número" style="text-align: center;">
+						<h:outputText value="#{agendamento.numero}" class="highlight"/>
+					</p:column>
+					<p:column headerText="Data" style="text-align: center;">
+						<h:outputText value="#{agendamento.data}" class="highlight"/>
+					</p:column>
+					<p:column headerText="Motivo" style="text-align: center;">
+						<h:outputText value="#{agendamento.motivo}" class="highlight"/>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

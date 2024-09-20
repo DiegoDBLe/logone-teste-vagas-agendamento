@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="container">
+                    <p:panel header="Cadastro de Solicitantes" class="highlight">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="nomeSolicitante" value="Nome do solicitante:"/>
+                            <p:inputText id="nomeSolicitante"  value="#{solicitanteBean.solicitanteNome}" required="true" maxlength="40">
+                                <f:validateLength minimum="3" ></f:validateLength>
+                            </p:inputText>
+                        </p:panelGrid>
+                        <br />
+                        <div style="text-align: left;">
+                            <p:commandButton value="Salvar"
+                                             action="#{solicitanteBean.salvarSolicitante}"
+                                             process="@form"
+                                             update="@form"
+                                             styleClass="section-title white-text" />
+                        </div>
+                    </p:panel>
+                </div>
+                <p:growl id="growl" showDetail="false" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:html>

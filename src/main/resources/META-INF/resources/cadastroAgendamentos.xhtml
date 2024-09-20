@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Cadastro de Agendamentos</title>
+
+    <style>
+        .bg-custom {
+            background-color: #f0f8ff !important;
+        }
+    </style>
+</h:head>
+
+<h:body >
+    <ui:composition template="/template.xhtml">
+        <ui:define name="content">
+            <h:form id="form" class="bg-custom">
+                <div class="bg-custom">
+                    <p:panel header="Cadastro de Agendamentos" class="highlight">
+                        <p:panelGrid id="panelGrid" columns="2">
+                            <p:outputLabel for="dataAgendamento" value="Data do agendamento:"/>
+                            <p:calendar id="dataAgendamento" pattern="dd/MM/yyyy"
+                                        value="#{agendamentoBean.agendamentoSelecionado.data}"
+                                        mindate="today"
+                                        showOn="button"
+                                        required="true">
+                                <p:ajax event="dateSelect" listener="#{agendamentoBean.atualizarVagasDisponiveis}" update="growl" />
+                            </p:calendar>
+
+                            <p:outputLabel for="numeroAgendamento" value="Número do agendamento:"/>
+                            <p:inputNumber id="numeroAgendamento"  value="#{agendamentoBean.agendamentoSelecionado.numero}" decimalPlaces="0" thousandSeparator="" required="true" maxlength="10" />
+
+                            <p:outputLabel for="motivoAgendamento" value="Motivo do agendamento:"/>
+                            <p:inputText id="motivoAgendamento"  value="#{agendamentoBean.agendamentoSelecionado.motivo}" required="true" maxlength="100"/>
+
+                            <p:outputLabel for="solicitante" value="Solicitante:"/>
+                            <p:selectOneMenu id="solicitante" value="#{agendamentoBean.solicitanteId}" noSelectionOption="false" required="true">
+                                <f:selectItem itemLabel="Selecione um solicitante" itemValue="" />
+                                <f:selectItems value="#{agendamentoBean.listaSolicitantes}" var="solicitante" itemLabel="#{solicitante.nome}" itemValue="#{solicitante.id}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <br />
+                        <div style="text-align: left;">
+                            <p:commandButton value="Salvar"
+                                             action="#{agendamentoBean.salvarAgendamento}"
+                                             process="@form"
+                                             update="@form"
+                                             styleClass="section-title white-text" />
+                        </div>
+                    </p:panel>
+                </div>
+                <p:growl id="growl" showDetail="false" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
+</html>
