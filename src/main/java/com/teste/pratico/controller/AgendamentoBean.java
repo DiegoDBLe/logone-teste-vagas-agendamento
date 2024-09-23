@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -67,10 +68,22 @@ public class AgendamentoBean {
         if (validarDatas()) {
 
             if (solicitanteId == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha um solicitante", null));
                 throw new IllegalArgumentException("Solicitante não pode ser nulo.");
             }
 
+            // Inicializa agendamentos se for nulo
+            if (agendamentos == null) {
+                agendamentos = new ArrayList<>();
+            }
+
             agendamentos = service.buscarAgendamentosPorPeriodoESolicitante(dataInicio, dataFim, solicitanteId);
+
+            if (agendamentos.isEmpty()) {
+                String mensagemErro = String.format("Nenhum agendamento encontrado entre as datas: %s e %s",
+                        dataInicio.toString(), dataFim.toString());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagemErro, null));
+            }
         }
         return agendamentos;
     }
@@ -79,6 +92,11 @@ public class AgendamentoBean {
 
         if (validarDatas()) {
             agendamentos = service.buscarAgendamentosPorPeriodo(dataInicio, dataFim);
+            if (agendamentos.isEmpty()){
+                String mensagemErro = String.format("Nenhum agendamento encontrado entre as datas: %s e %s",
+                        dataInicio.toString(), dataFim.toString());
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagemErro, null));
+            }
         }
         return agendamentos;
     }

@@ -9,6 +9,10 @@ import lombok.Data;
 import org.primefaces.PrimeFaces;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Data
 @ViewScoped
@@ -18,6 +22,10 @@ public class VagaBean {
     private boolean isValido;
     private Vaga vagaSelecionada = new Vaga();
 
+    private LocalDate dataInicioBusca;
+    private LocalDate dataFimBusca;
+    private List<Vaga> vagasEncontradas = new ArrayList<>();
+    private Integer totalQuantidade;
 
     public void salvarVaga() {
         if (validarDatas()) {
@@ -28,6 +36,31 @@ public class VagaBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Vagas criadas com sucesso!", ""));
             limparFormulario();
         }
+    }
+
+    public void buscarVagasPorPeriodo() {
+        if (dataInicioBusca != null && dataFimBusca != null && validarDatasBusca()) {
+            vagasEncontradas = service.buscaQuantidadeVagasPorPeriodo(dataInicioBusca, dataFimBusca);
+
+            totalQuantidade = 0;
+
+            for (Vaga vaga : vagasEncontradas) {
+                totalQuantidade += vaga.getQuantidade();
+            }
+            if (vagasEncontradas.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nenhuma vaga encontrada para o período informado.", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Vagas encontradas: " + totalQuantidade, ""));
+            }
+        }
+    }
+
+    private boolean validarDatasBusca() {
+        if (dataFimBusca.isBefore(dataInicioBusca)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A data final precisa ser maior que a data inicial.", ""));
+            return false;
+        }
+        return true;
     }
     private Vaga mapearVaga() {
         Vaga vaga = new Vaga();

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/template.xhtml">
+	<ui:define name="content" styleClass="section-title">
+		<div>
+			<div>
+				<h:form>
+					<p:panel header="Consulta de Vagas Cadastradas" class="highlight">
+						<p:panelGrid id="panelGrid" columns="2" styleClass="section-title">
+							<p:outputLabel for="dataInicioBusca" value="Data de início:"/>
+							<p:calendar id="dataInicioBusca" value="#{vagaBean.dataInicioBusca}" showOn="button" required="true"/>
+
+							<p:outputLabel for="dataFimBusca" value="Data de término:"/>
+							<p:calendar id="dataFimBusca" value="#{vagaBean.dataFimBusca}" showOn="button" required="true"/>
+						</p:panelGrid>
+						<br/>
+						<div style="text-align: left;">
+							<p:commandButton value="Consultar"
+											 action="#{vagaBean.buscarVagasPorPeriodo}"
+											 process="@form"
+											 update="panelGrid,dataTable,growl"
+											 styleClass="section-title white-text" />
+							<h:outputText value="Total de Vagas: #{vagaBean.totalQuantidade}" rendered="#{not empty vagaBean.totalQuantidade}" />
+						</div>
+					</p:panel>
+					<p:growl id="growl" showDetail="false"/>
+				</h:form>
+			</div>
+			<div style="flex: 2;">
+				<p:dataTable id="dataTable" value="#{vagaBean.vagasEncontradas}" var="vaga" emptyMessage="Nenhuma vaga encontrada" styleClass="section-title">
+					<p:column headerText="Data de Início" style="text-align: center;">
+						<h:outputText value="#{vaga.inicio}" class="highlight"/>
+					</p:column>
+					<p:column headerText="Data de Término" style="text-align: center;">
+						<h:outputText value="#{vaga.fim}" class="highlight"/>
+					</p:column>
+					<p:column headerText="Quantidade" style="text-align: center;">
+						<h:outputText value="#{vaga.quantidade}" class="highlight"/>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>
