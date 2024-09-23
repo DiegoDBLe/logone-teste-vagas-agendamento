@@ -65,12 +65,11 @@ public class AgendamentoBean {
 
     public List<Agendamento> buscarAgendamentosPorPeriodoESolicitante() {
         if (validarDatas()) {
-            // Verifique se o solicitanteId foi selecionado
+
             if (solicitanteId == null) {
                 throw new IllegalArgumentException("Solicitante não pode ser nulo.");
             }
 
-            // Chama o serviço diretamente com o solicitanteId
             agendamentos = service.buscarAgendamentosPorPeriodoESolicitante(dataInicio, dataFim, solicitanteId);
         }
         return agendamentos;
@@ -96,7 +95,7 @@ public class AgendamentoBean {
         }
 
         try {
-            // Tentativa de salvar o agendamento
+
             Agendamento agendamento = mapearAgendamento();
             service.salvarAgendamento(agendamento);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agendamento criado com sucesso!", ""));
