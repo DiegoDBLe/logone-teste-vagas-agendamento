@@ -50,9 +50,13 @@ public class AgendamentoService {
     private static void atualizaNumeroVagasAposAgendamento(List<Vaga> vagasDisponiveis) {
         vagasDisponiveis.stream()
                 .filter(vaga -> vaga.getQuantidade() > 0)
-                .findFirst()
-                .ifPresent(vaga -> vaga.setQuantidade(vaga.getQuantidade() - 1));
+                .forEach(vaga -> vaga.setQuantidade(vaga.getQuantidade() - 1));
     }
+
+    public List<Agendamento> buscarAgendamentosPorPeriodoESolicitante(LocalDate dataInicio, LocalDate dataFim, Long solicitanteId) {
+        return agendamentoRepository.buscarAgendamentosPorPeriodoESolicitante(dataInicio, dataFim, solicitanteId);
+    }
+
 
     public List<Agendamento> buscarAgendamentosPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
 

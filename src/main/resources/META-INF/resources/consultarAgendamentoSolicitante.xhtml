@@ -10,18 +10,23 @@
 		<div>
 			<div>
 				<h:form>
-					<p:panel header="Consulta de Agendamentos"  class="highlight">
+					<p:panel header="Consulta de Agendamentos por Solicitante"  class="highlight">
 						<p:panelGrid id="panelGrid" columns="2" styleClass="section-title">
 							<p:outputLabel for="dataInicioConsulta" value="Data de início:"/>
 							<p:calendar id="dataInicioConsulta" value="#{agendamentoBean.dataInicio}" showOn="button" required="true"/>
 
 							<p:outputLabel for="dataFimConsulta" value="Data de término:"/>
 							<p:calendar id="dataFimConsulta" value="#{agendamentoBean.dataFim}" showOn="button" required="true"/>
+							<p:outputLabel for="solicitante" value="Solicitante:"/>
+							<p:selectOneMenu id="solicitante" value="#{agendamentoBean.solicitanteId}" noSelectionOption="false" required="true">
+								<f:selectItem itemLabel="Selecione um solicitante" itemValue="" />
+								<f:selectItems value="#{agendamentoBean.listaSolicitantes}" var="solicitante" itemLabel="#{solicitante.nome}" itemValue="#{solicitante.id}" />
+							</p:selectOneMenu>
 						</p:panelGrid>
 						<br/>
 						<div style="text-align: left;">
 							<p:commandButton value="Consultar"
-											 action="#{agendamentoBean.buscarAgendamentoPorPeriodo}"
+											 action="#{agendamentoBean.buscarAgendamentosPorPeriodoESolicitante}"
 											 process="@form"
 											 update="panelGrid,dataTable,@form"
 											 styleClass="section-title white-text" />

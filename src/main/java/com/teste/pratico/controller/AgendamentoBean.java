@@ -5,6 +5,7 @@ import com.teste.pratico.exception.VagaNaoEncontradaException;
 import com.teste.pratico.model.Agendamento;
 import com.teste.pratico.model.Solicitante;
 import com.teste.pratico.model.Vaga;
+import com.teste.pratico.repository.SolicitanteRepository;
 import com.teste.pratico.service.AgendamentoService;
 import com.teste.pratico.service.VagaService;
 import jakarta.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import jakarta.faces.view.ViewScoped;
 import lombok.Data;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -36,6 +38,10 @@ public class AgendamentoBean {
     private List<Agendamento> agendamentos;
     private List<Solicitante> listaSolicitantes;
 
+    @Autowired
+    private SolicitanteRepository solicitanteRepository;
+
+
     public AgendamentoBean(SolicitanteBean solicitanteBean, AgendamentoService service, VagaService vagaService) {
         this.solicitanteBean = solicitanteBean;
         this.service = service;
@@ -51,6 +57,25 @@ public class AgendamentoBean {
         listaSolicitantes = solicitanteBean.buscarTodos();
     }
 
+    private Long getSolicitanteIdPeloNome(String nome) {
+        return solicitanteRepository.findByNome(nome)
+                .map(Solicitante::getId)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitante não encontrado com o nome: " + nome));
+    }
+
+    public List<Agendamento> buscarAgendamentosPorPeriodoESolicitante() {
+        if (validarDatas()) {
+            // Verifique se o solicitanteId foi selecionado
+            if (solicitanteId == null) {
+                throw new IllegalArgumentException("Solicitante não pode ser nulo.");
+            }
+
+            // Chama o serviço diretamente com o solicitanteId
+            agendamentos = service.buscarAgendamentosPorPeriodoESolicitante(dataInicio, dataFim, solicitanteId);
+        }
+        return agendamentos;
+    }
+
     public List<Agendamento> buscarAgendamentoPorPeriodo() {
 
         if (validarDatas()) {
@@ -60,14 +85,26 @@ public class AgendamentoBean {
     }
 
     public void salvarAgendamento() {
+        // Validação de campos obrigatórios
+        if (agendamentoSelecionado.getNumero() == null || agendamentoSelecionado.getNumero().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O campo Número é obrigatório.", ""));
+            return;
+        }
+        if (agendamentoSelecionado.getMotivo() == null || agendamentoSelecionado.getMotivo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O campo Motivo é obrigatório.", ""));
+            return;
+        }
+
         try {
+            // Tentativa de salvar o agendamento
             Agendamento agendamento = mapearAgendamento();
             service.salvarAgendamento(agendamento);
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agendamento criado com sucesso!", ""));
             limparFormulario();
         } catch (VagaNaoEncontradaException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao salvar o agendamento. Tente novamente.", ""));
         }
     }
 
@@ -102,17 +139,18 @@ public class AgendamentoBean {
         LocalDate dataSelecionada = (LocalDate) event.getObject();
         List<Vaga> vagasIntersectadas = vagaService.buscaQuantidadeVagasPorPeriodo(dataSelecionada, dataSelecionada);
 
+        if (vagasIntersectadas == null || vagasIntersectadas.isEmpty()) {
+            vagasDisponiveis = 0;
+        } else {
+            vagasDisponiveis = vagasIntersectadas.stream().mapToInt(Vaga::getQuantidade).sum();
+        }
 
-        vagasDisponiveis = vagasIntersectadas.stream()
-                .mapToInt(Vaga::getQuantidade)
-                .sum();
-
-        FacesContext.getCurrentInstance().
-                addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Número de vagas para a data: " + vagasDisponiveis, ""));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Número de vagas para a data: " + vagasDisponiveis, ""));
     }
 
     private Solicitante buscaSolicitantePeloId() {
-        return service.findById(solicitanteId).get();
+        return service.findById(solicitanteId)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitante não encontrado com o ID: " + solicitanteId));
     }
 
 }
