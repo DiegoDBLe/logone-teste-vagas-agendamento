@@ -13,6 +13,7 @@ Em vez de seguir uma estrutura alternativa, segui o padrão de Arquitetura em Ca
 - **Cadastro de Vagas**: Facilita o registro de vagas disponíveis dentro de um período específico.
 - **Cadastro de Agendamentos**: Possibilita o registro de agendamentos em uma data definida.
 - **Consulta de Agendamentos**: Oferece a funcionalidade de consultar agendamentos realizados em um determinado intervalo de datas.
+- **Consulta de Vagas Cadastradas**: Oferece a funcionalidade de consultar quantidade de vagas cadastradas  em um determinado intervalo de datas.
 
 # Clone o repositório do GitHub
 git clone https://github.com/DiegoDBLe/logone-teste-vagas-agendamento
