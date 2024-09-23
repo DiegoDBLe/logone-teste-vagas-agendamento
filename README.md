@@ -49,6 +49,10 @@ git clone https://github.com/DiegoDBLe/logone-teste-vagas-agendamento
 <img width="945" alt="image" src="https://github.com/user-attachments/assets/31068bf1-8cc9-4807-b080-b0b56a31e9b8">
 <img width="910" alt="image" src="https://github.com/user-attachments/assets/412159d8-6190-422a-a2ff-2386146f458b">
 
+- Consulta de Vagas Cadastradas por periodo especifico no menuIteme e retornando no grid as informações
+<img width="952" alt="image" src="https://github.com/user-attachments/assets/a2879563-19ce-4ae5-9051-f541f6c50421">
+
+
 
 
 
