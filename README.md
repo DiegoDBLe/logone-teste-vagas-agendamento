@@ -46,7 +46,9 @@ git clone https://github.com/DiegoDBLe/logone-teste-vagas-agendamento
 <img width="954" alt="image" src="https://github.com/user-attachments/assets/a9f9b9c3-116c-4ee0-8cf7-0b56035c7a41">
 
 - Consulta de Agendamentos por periodo e por solicitante especifico no menuIteme e retornando no grid as informações
-<img <img width="945" alt="image" src="https://github.com/user-attachments/assets/31068bf1-8cc9-4807-b080-b0b56a31e9b8">
+<img width="945" alt="image" src="https://github.com/user-attachments/assets/31068bf1-8cc9-4807-b080-b0b56a31e9b8">
+<img width="910" alt="image" src="https://github.com/user-attachments/assets/412159d8-6190-422a-a2ff-2386146f458b">
+
 
 
 
