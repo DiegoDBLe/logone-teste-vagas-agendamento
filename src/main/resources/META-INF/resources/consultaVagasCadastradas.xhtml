@@ -23,9 +23,14 @@
 							<p:commandButton value="Consultar"
 											 action="#{vagaBean.buscarVagasPorPeriodo}"
 											 process="@form"
-											 update="panelGrid,dataTable,growl"
+											 update="panelGrid,dataTable,growl,agendamentosFeitos,vagasDisponiveis"
 											 styleClass="section-title white-text" />
+							<br />
 							<h:outputText value="Total de Vagas: #{vagaBean.totalQuantidade}" rendered="#{not empty vagaBean.totalQuantidade}" />
+							<br />
+							<h:outputText id="agendamentosFeitos" value="Total de Agendamentos Feitos: #{vagaBean.totalAgendamentosFeitos}" rendered="#{not empty vagaBean.totalAgendamentosFeitos}" />
+							<br />
+							<h:outputText id="vagasDisponiveis" value="Vagas Disponíveis: #{vagaBean.vagasDisponiveis}" rendered="#{not empty vagaBean.vagasDisponiveis}" />
 						</div>
 					</p:panel>
 					<p:growl id="growl" showDetail="false"/>
@@ -39,8 +44,8 @@
 					<p:column headerText="Data de Término" style="text-align: center;">
 						<h:outputText value="#{vaga.fim}" class="highlight"/>
 					</p:column>
-					<p:column headerText="Quantidade" style="text-align: center;">
-						<h:outputText value="#{vaga.quantidade}" class="highlight"/>
+					<p:column headerText="Quantidade vagas no período" style="text-align: center;">
+						<h:outputText value="#{vagaBean.totalAgendamentosFeitos}" class="highlight"/>
 					</p:column>
 				</p:dataTable>
 			</div>

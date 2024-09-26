@@ -1,5 +1,6 @@
 package com.teste.pratico.service;
 
+import com.teste.pratico.exception.LimiteAgendamentosExcedidoException;
 import com.teste.pratico.exception.VagaNaoEncontradaException;
 import com.teste.pratico.model.Agendamento;
 import com.teste.pratico.model.Solicitante;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,14 +31,31 @@ public class AgendamentoService {
 
     @Transactional
     public void salvarAgendamento(Agendamento agendamento) throws VagaNaoEncontradaException {
-        List<Vaga> vagasIntersectadas = buscaQuantidadedeVagasPorPeriodo(agendamento);
+        List<Vaga> vagasDisponiveis = vagaService.buscaQuantidadeVagasPorPeriodo(agendamento.getData(), agendamento.getData());
 
-        if (vagasIntersectadas.isEmpty() || vagasIntersectadas.stream().noneMatch(vaga -> vaga.getQuantidade() > 0)) {
+        if (vagasDisponiveis.isEmpty() || vagasDisponiveis.stream().noneMatch(vaga -> vaga.getQuantidade() > 0)) {
             throw new VagaNaoEncontradaException("Não há vagas disponíveis para a data indicada.");
         }
 
+        //Calcula o total de vagas disponiveis no periodo
+        int totalVagas = vagasDisponiveis.stream().mapToInt(Vaga::getQuantidade).sum();
+
+        //busca o numero de agendamentos feito por solicitante no periodo
+        List<Agendamento> agendamentosDoSolicitante = agendamentoRepository.buscarAgendamentosPorPeriodoESolicitante(
+                agendamento.getData(),
+                agendamento.getData(),
+                agendamento.getSolicitante().getId()
+        );
+
+        // Calculo para limitar a quantidade de agendamentos para 25% das vagas dispoiniveis
+        int limiteAgendamentosPorSolicitante = (int) Math.ceil(totalVagas * 0.25);
+
+        if (agendamentosDoSolicitante.size() >= limiteAgendamentosPorSolicitante){
+            throw new LimiteAgendamentosExcedidoException("Você já atingiu o limite de 25% das vagas disponíveis para o periodo.");
+        }
+
         agendamentoRepository.save(agendamento);
-        atualizaNumeroVagasAposAgendamento(vagasIntersectadas);
+        atualizaNumeroVagasAposAgendamento(vagasDisponiveis);
     }
 
     private List<Vaga> buscaQuantidadedeVagasPorPeriodo(Agendamento agendamento) {

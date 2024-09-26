@@ -1,6 +1,7 @@
 package com.teste.pratico.controller;
 
 
+import com.teste.pratico.exception.LimiteAgendamentosExcedidoException;
 import com.teste.pratico.exception.VagaNaoEncontradaException;
 import com.teste.pratico.model.Agendamento;
 import com.teste.pratico.model.Solicitante;
@@ -102,7 +103,7 @@ public class AgendamentoBean {
     }
 
     public void salvarAgendamento() {
-        // Validação de campos obrigatórios
+
         if (agendamentoSelecionado.getNumero() == null || agendamentoSelecionado.getNumero().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O campo Número é obrigatório.", ""));
             return;
@@ -118,10 +119,8 @@ public class AgendamentoBean {
             service.salvarAgendamento(agendamento);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Agendamento criado com sucesso!", ""));
             limparFormulario();
-        } catch (VagaNaoEncontradaException e) {
+        } catch (VagaNaoEncontradaException | LimiteAgendamentosExcedidoException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao salvar o agendamento. Tente novamente.", ""));
         }
     }
 

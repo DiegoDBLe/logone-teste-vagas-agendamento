@@ -8,38 +8,50 @@
     <title>Controle de Agendamentos de Vagas</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- Importações PrimeFlex, PrimeVue e PrimeIcons -->
     <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css"/>
     <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primevue/resources/themes/nova/theme.css"/>
-
     <link rel="stylesheet" href="https://unpkg.com/primevue/resources/primevue.min.css"/>
     <link rel="stylesheet" href="https://unpkg.com/primevue/resources/themes/vela.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/primeflex/primeflex.css"/>
 
+    <!-- Estilos Personalizados -->
     <style>
-        .ui-panel {
-            background-color: #1e90ff !important;
-            border-color: #007bff !important;
+        /* Estilos Globais */
+        body {
+            background-color: #f4f7f9; /* Fundo suave */
+            font-family: Arial, sans-serif;
         }
 
-        .section-title {
-            background-color: #1e90ff !important;
+        .highlight {
+            background-color: #1e90ff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
             color: white;
-        }
-
-        h2 {
             text-align: center;
-            color: white;
+        }
+
+        .highlight h2 {
+            font-size: 2rem;
             font-weight: bold;
+            margin: 0;
+        }
+
+        /* Menu personalizado */
+        .layout-sidebar {
+            margin-bottom: 20px;
         }
 
         .ui-menubar, .ui-menuitem-link {
             background-color: #1e90ff !important;
             border: none;
+            color: white !important;
+            font-weight: bold;
         }
 
         .ui-menuitem-link {
-            color: red !important;
+            color: white !important;
         }
 
         .ui-menuitem-link:hover {
@@ -51,61 +63,71 @@
             color: white !important;
         }
 
-        body {
-            background-color: white!important;
+        .menu-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
-        .highlight {
-            background-color: #1e90ff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            width: 100%;
-            box-sizing: border-box;
-         }
-
-        .highlight .ui-panel-title {
-            background-color: #1e90ff;
-            color: white !important;
-            padding: 15px;
-            text-align: center;
-            width: 100%;
-            display: block;
-            margin: 0;
-            box-sizing: border-box;
-            border-radius: 5px;
-         }
-
         .white-text {
-            color: white !important; /* Garante que a cor branca seja aplicada */
-         }
+            color: white !important;
+        }
 
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .ui-menubar {
+                font-size: 0.9rem;
+            }
+
+            .highlight h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .highlight h2 {
+                font-size: 1.2rem;
+            }
+
+            .menu-container {
+                padding: 10px;
+            }
+        }
     </style>
-
-
 </h:head>
 
 <h:body>
+    <!-- Script de Localização -->
     <h:outputScript name="locales/locale-pt.js" library="primefaces"/>
+
+    <!-- Cabeçalho Principal -->
     <div class="highlight">
         <h2>Controle de Agendamentos de Vagas</h2>
     </div>
-    <div class="card">
-        <div class="layout-sidebar">
-            <p:menubar style="margin-top: 50px;">
-                <p:menuitem value="Cadastro de Vagas" icon="pi pi-fw pi-plus" url="cadastroVagas.xhtml"/>
-                <p:menuitem value="Cadastro de Agendamentos" icon="pi pi-fw pi-calendar-plus"
-                            url="cadastroAgendamentos.xhtml"/>
-                <p:menuitem value="Cadastro de Solicitantes" icon="pi pi-fw pi-user-plus"
-                            url="cadastroSolicitantes.xhtml"/>
-                <p:menuitem value="Consulta de Agendamentos" icon="pi pi-fw pi-search" url="index.xhtml"/>
-                <p:menuitem value="Consulta de Agendamentos por Solicitante" icon="pi pi-fw pi-search" url="consultarAgendamentoSolicitante.xhtml"/>
-                <p:menuitem value="Consulta de Vagas Cadastradas" icon="pi pi-fw pi-search" url="consultaVagasCadastradas.xhtml"/>
-            </p:menubar>
+
+    <!-- Container do Menu e Conteúdo -->
+    <div class="container">
+        <div class="menu-container">
+            <div class="layout-sidebar">
+                <!-- Menu Lateral -->
+                <p:menubar style="margin-bottom: 20px;">
+                    <p:menuitem value="Cadastro de Vagas" icon="pi pi-fw pi-plus" url="cadastroVagas.xhtml"/>
+                    <p:menuitem value="Cadastro de Agendamentos" icon="pi pi-fw pi-calendar-plus"
+                                url="cadastroAgendamentos.xhtml"/>
+                    <p:menuitem value="Cadastro de Solicitantes" icon="pi pi-fw pi-user-plus"
+                                url="cadastroSolicitantes.xhtml"/>
+                    <p:menuitem value="Consulta de Agendamentos" icon="pi pi-fw pi-search" url="index.xhtml"/>
+                    <p:menuitem value="Consulta de Agendamentos por Solicitante" icon="pi pi-fw pi-search"
+                                url="consultarAgendamentoSolicitante.xhtml"/>
+                    <p:menuitem value="Consulta de Vagas Cadastradas" icon="pi pi-fw pi-search"
+                                url="consultaVagasCadastradas.xhtml"/>
+                </p:menubar>
+            </div>
         </div>
         <br/>
+        <!-- Conteúdo da Página -->
         <ui:insert name="content"></ui:insert>
     </div>
 </h:body>
-
 </html>
